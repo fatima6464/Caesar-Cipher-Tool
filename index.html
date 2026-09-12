@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caesar Cipher - Enhanced UI</title>
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1d2b64, #4b79a1);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        color: #fff;
+    }
+
+    .container {
+        background: #fff;
+        color: #1d2b64;
+        width: 450px;
+        margin-top: 50px;
+        padding: 25px 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 15px;
+    }
+
+    input, textarea, button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 8px;
+        border-radius: 8px;
+        border: 1px solid #bbb;
+        font-size: 15px;
+        font-family: inherit;
+    }
+
+    button {
+        background: #1d2b64;
+        color: white;
+        cursor: pointer;
+        border: none;
+        transition: 0.3s;
+    }
+
+    button:hover:enabled {
+        background: #142044;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    #suggestions {
+        font-size: 13px;
+        margin-top: 5px;
+        color: #555;
+        min-height: 36px;
+    }
+
+    .placeholder {
+        color: gray;
+    }
+
+    input:focus,
+textarea:focus {
+    border-color:#1d2b64;
+    outline: none; /* remove default blue outline */
+    
+}
+    /* Algorithm & How it works section */
+    .algorithm {
+        background: #f1f1f1;
+        color: #1d2b64;
+        margin-top: 25px;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    .algorithm h3 {
+        margin-top: 0;
+    }
+
+    .algorithm ol {
+        padding-left: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Caesar Cipher Tool</h2>
+
+    <label>Enter Message:</label>
+    <textarea id="message" rows="3" placeholder="Type your message here..."></textarea>
+
+    <div id="suggestions">
+        Only letters are encrypted; symbols remain unchanged.<br>
+        Letters will shift based on your key (A → D if key = 3).
+    </div>
+
+    <label>Enter Key (Shift):</label>
+    <input type="number" id="key" placeholder="Enter shift number">
+
+    <div class="btn-group">
+        <button id="encryptBtn">Encrypt</button>
+        <button id="decryptBtn" disabled>Decrypt</button>
+    </div>
+
+    <label>Output:</label>
+    <textarea id="output" rows="3" readonly class="placeholder">Your output will appear here...</textarea>
+
+    <!-- Algorithm explanation -->
+    <!-- <div class="algorithm">
+        <h3>Algorithm Steps:</h3>
+        <ol>
+            <li>Take each letter of the input message.</li>
+            <li>Convert the letter to its ASCII code.</li>
+            <li>Shift the code by the key (for encryption) or reverse by key (for decryption).</li>
+            <li>Wrap around if it goes beyond 'Z' or 'z'.</li>
+            <li>Convert the shifted code back to a character.</li>
+            <li>Non-letter characters remain unchanged.</li>
+        </ol>
+
+        <h3>How it Works:</h3>
+        <p>
+            Caesar Cipher shifts letters in the message by a fixed number (the key). 
+            For example, with key = 3: 'A' → 'D', 'B' → 'E'. 
+            Decryption reverses the shift to recover the original message.
+        </p>
+    </div> -->
+</div>
+
+<script>
+    const message = document.getElementById("message");
+    const keyInput = document.getElementById("key");
+    const output = document.getElementById("output");
+    const encryptBtn = document.getElementById("encryptBtn");
+    const decryptBtn = document.getElementById("decryptBtn");
+
+    function shiftChar(c, key) {
+        let code = c.charCodeAt(0);
+        if (code >= 65 && code <= 90) return String.fromCharCode(((code - 65 + key + 26) % 26) + 65);
+        if (code >= 97 && code <= 122) return String.fromCharCode(((code - 97 + key + 26) % 26) + 97);
+        return c;
+    }
+
+    function encrypt() {
+        let msg = message.value;
+        let key = parseInt(keyInput.value) || 0;
+        if (!msg) return;
+
+        let result = "";
+        for (let c of msg) result += shiftChar(c, key);
+
+        output.value = result;
+        output.classList.remove("placeholder");
+        decryptBtn.disabled = false;
+    }
+
+    function decrypt() {
+        let msg = output.value || message.value;
+        let key = parseInt(keyInput.value) || 0;
+        if (!msg) return;
+
+        let decryptKey = -key;
+        let result = "";
+        for (let c of msg) result += shiftChar(c, decryptKey);
+
+        output.value = result;
+        output.classList.remove("placeholder");
+        decryptBtn.disabled = !output.value;
+    }
+
+    // Enable/disable decrypt button based on output content
+    output.addEventListener("input", () => {
+        decryptBtn.disabled = !output.value.trim();
+    });
+
+    encryptBtn.addEventListener("click", encrypt);
+    decryptBtn.addEventListener("click", decrypt);
+</script>
+
+</body>
+</html>
