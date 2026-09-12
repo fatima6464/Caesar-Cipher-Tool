@@ -32,6 +32,9 @@ The Caesar Cipher is a substitution cipher where each letter in a message is shi
 
 **Example:** With key = `3`: `HELLO` → `KHOOR`
 
+<img width="1917" height="917" alt="image" src="https://github.com/user-attachments/assets/165a1740-5cb0-43e0-80e8-fedfb8711af5" />
+
+
 ## 🛠️ Tech Stack
 
 | Category | Details |
@@ -64,6 +67,9 @@ Since this is pure client-side HTML/CSS/JS, you can host it for free with **GitH
 1. Repo → **Settings** → **Pages**
 2. Source: `main` branch, root folder → Save
 3. Visit `https://<your-username>.github.io/Caesar-Cipher-Tool/`
+
+<img width="1917" height="908" alt="image" src="https://github.com/user-attachments/assets/8d856023-dbaa-421a-a413-ef7812aa0efa" />
+
 
 ## 🕹️ Usage
 
